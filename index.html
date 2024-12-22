@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Cumpleaños</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a5acd;
+            --secondary-color: #9932cc;
+            --accent-color: #ff69b4;
+            --highlight-color: #fffacd;
+            --gold-color: #ffd700;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--highlight-color);
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .present-container {
+            position: relative;
+            width: 80vw;
+            height: 80vw;
+            perspective: 1000px;
+            margin: 20px auto;
+        }
+
+        .present {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform-origin: center;
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .present.opened {
+            transform: rotateY(180deg) scale(0.5);
+        }
+
+        .present-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+        }
+
+        .present-front {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            transform-origin: center;
+            animation: pulse 2s infinite;
+        }
+
+        .present-back {
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+            transform: rotateY(180deg);
+        }
+
+        .gift-emoji {
+            font-size: 6rem;
+            animation: bounce 2s infinite;
+        }
+
+        .card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 80vw;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--highlight-color);
+        }
+
+        .btn-magic {
+            background: linear-gradient(45deg, var(--gold-color), var(--accent-color));
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(218, 112, 214, 0.5);
+        }
+
+        .btn-magic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--gold-color);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            animation: confetti-fall 3s forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .floating-emojis {
+            position: absolute;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: float-emoji 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px var(--gold-color));
+        }
+
+        h1 {
+            color: var(--gold-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            font-size: 2.5rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px var(--accent-color); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px var(--gold-color); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20px, -20px) rotate(20deg); }
+        }
+
+        /* Ajustes para móvil */
+        @media (max-width: 600px) {
+            .present-container {
+                width: 70vw;
+                height: 70vw;
+            }
+
+            .card {
+                width: 90vw;
+                padding: 1.5rem;
+            }
+
+            .message {
+                font-size: 1rem;
+                margin: 1rem 0;
+            }
+
+            .btn-magic {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Tulipanes */
+        .tulipan {
+            position: absolute;
+            font-size: 4rem;
+            color: #ff69b4;
+            animation: float-emoji 5s ease-in-out infinite;
+        }
+
+        .tulipan-left {
+            left: 5%;
+            top: 10%;
+            transform: rotate(-15deg);
+        }
+
+        .tulipan-right {
+            right: 5%;
+            top: 10%;
+            transform: rotate(15deg);
+        }
+
+        /* Marca de agua */
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-family: 'Arial', sans-serif;
+            transform: rotate(45deg);
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="tulipan tulipan-left">🌷</div>
+    <div class="tulipan tulipan-right">🌷</div>
+
+    <!-- Contenedor del presente -->
+    <div class="present-container" id="presentContainer">
+        <div class="present" onclick="openPresent()">
+            <div class="present-face present-front">
+                <div class="gift-emoji">🎁</div>
+            </div>
+            <div class="present-face present-back">
+                <div class="gift-emoji">✨</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta de cumpleaños -->
+    <div class="card" id="birthdayCard">
+        <h1 class="text-center mb-4 animate__animated animate__bounceIn">
+             ¡Feliz Cumpleaños, Mochita! 💖
+        </h1>
+
+        <div class="message animate__animated animate__fadeIn animate__delay-1s">
+            <p>
+                🎂 Hoy celebro tu vida y te pido perdón por cualquier dolor que te haya causado. Mi corazón siempre te llevará conmigo, y siempre desearé lo mejor para ti. Que cada paso que tomes esté lleno de amor y felicidad.
+            </p>
+            <p>
+                🌟 ¡Te quiero y te aprecio más de lo que las palabras pueden expresar!
+            </p>
+        </div>
+
+        <div class="text-center">
+            <button class="btn-magic animate__animated animate__pulse animate__infinite" onclick="celebrate()">
+                ¡Celebrar! 🎈
+            </button>
+        </div>
+    </div>
+
+    <div class="watermark">JM</div>
+
+    <!-- Reproductor de audio -->
+    <audio id="audio" loop>
+        <source src="Las mañanitas.mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>    
+
+    <!-- Scripts de animación y efectos -->
+    <script>
+        // Función para reproducir el audio
+        function playAudio() {
+            const audio = document.getElementById('audio');
+            audio.play();
+        }
+
+        function createStars() {
+            const stars = document.querySelector('.stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                stars.appendChild(star);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#6a5acd', '#9932cc', '#ff69b4', '#fffacd', '#ffd700'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(confetti);
+            }
+        }
+
+        function openPresent() {
+            document.querySelector('.present').classList.toggle('opened');
+            setTimeout(() => {
+                document.getElementById('birthdayCard').classList.add('visible');
+                playAudio(); // Reproducir el audio cuando se abre la carta
+            }, 1000);
+        }
+
+        function celebrate() {
+            createConfetti();
+            const btn = document.querySelector('.btn-magic');
+            btn.classList.add('animate__rubberBand');
+            setTimeout(() => {
+                btn.classList.remove('animate__rubberBand');
+            }, 1000);
+        }
+
+        createStars();
+    </script>
+</body>
+</html>
